@@ -3,7 +3,7 @@ const mongoUri=("mongodb://localhost:27017");
 
 const connectToMongo=()=>{
     mongoose.connect(mongoUri, ()=>{
-        console.log("Connected to mongo");
+        console.log("Connected to mongoDB");
     })
 }
 
