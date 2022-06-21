@@ -21,4 +21,9 @@ const UserSchema = new Schema({
     }
   });
 
+//   The following statment were add by harry but i had not this works for non-repetation of email
+//   const User =mongoose.model("user", UserSchema);
+//   User.createIndexes();
+//   module.exports=User
+
   module.exports=mongoose.model("user",UserSchema)
