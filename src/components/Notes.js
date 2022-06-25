@@ -4,7 +4,7 @@ import AddNotes from './AddNotes';
 import Noteitems from './Noteitems';
 export default function Notes() {
   const context = useContext(Context);
-  const { notes, getNotes } = context;
+  const { notes, getNotes, editNote} = context;
   const [note, setNote] = useState({ title: "", description: "", tag: "" })
   useEffect(() => {
     getNotes()
@@ -14,9 +14,8 @@ export default function Notes() {
   const refClose=useRef(null)
 
   const updateNote = (note) => {
-    // console.log("neel shah")
     ref.current.click();
-    setNote({utitle: note.title,udescription: note.description,utag: note.tag});
+    setNote({id:note._id, utitle:note.title, udescription:note.description, utag:note.tag});
   }
 
   const onChange=(event)=>{
@@ -24,10 +23,8 @@ export default function Notes() {
   }
 
   const onClick=(event)=>{
-    event.preventDefault();
-    console.log("Updating note...", note)
+    editNote(note.id, note.utitle, note.udescription, note.utag);
     refClose.current.click();
-    //Work to do
   }
 
   return (

@@ -26,7 +26,6 @@ function App() {
      },
    });
    const json=await response.json();
-  //  console.log(json)
    setNotes(json);
  }
 
@@ -69,7 +68,6 @@ function App() {
 
   //For internal instant delete
   const newNotes=notes.filter((note1)=>{return note1._id !== delId})
-  // console.log(`{Deleting note with ${id}}`);
   setNotes(newNotes);
 }
   //Edit a note
@@ -84,18 +82,21 @@ function App() {
       },
       body: JSON.stringify({title, description, tag} )
     });
-    const json=response.json();
+    const json=await response.json();
 
     //Logic to edit in client
+    let newNotes=JSON.parse(JSON.stringify(notes))
     for(let index=0; index<notes.length;index++){
       const element=notes[index];
       if(element._id === id)
       {
-        element.title=title;
-        element.description=description;
-        element.tag=tag;
+        newNotes[index].title=title;
+        newNotes[index].description=description;
+        newNotes[index].tag=tag;
+        break;
       }
     }
+    setNotes(newNotes);
   }
 
   return (
