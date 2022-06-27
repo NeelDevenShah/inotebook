@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 const JWT_SECRET = "NeelIsGoodBoy"
 var jwt = require('jsonwebtoken');
 const fetchuser = require("../middleware/fetchuser");
+const { useState } = require("react");
+// const [success, setSuccess]=useState("fail");
 
 //ROUTE 1: Create a user using : POST "/api/auth/createuser". No end point required
 //Here there are two options the router.get and the router.post
@@ -55,21 +57,24 @@ router.post("/login", [
   body("email", "Enter the right email").isEmail(),
   body("password", "Enter the password it cannot be blank").exists(),
 ], async (req, res) => {
-
+  let success=false;
   const errors = validationResult(req);
   if (!errors.isEmpty) {
     //If errors than return bad request and error
+    success=false;
     return res.status(400).json({ errors: errors.array() });
   }
   const { email, password } = req.body;
   try {
     let user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ error: "Wrong crediantials emtered, try again" })
+      success=false;
+      return res.status(400).json({ error: "Wrong crediantials entered, try again" })
     }
 
     const passwordCompare = await bcrypt.compare(password, user.password);
     if (!passwordCompare) {
+      success=false;
       return res.status(400).json({ error: "Please try to login with correct credentials" })
     }
     const data = {
@@ -78,9 +83,12 @@ router.post("/login", [
       }
     }
     const authtoken = jwt.sign(data, JWT_SECRET);
-    res.json({authtoken})
+    // setSuccess("true");
+    let success=true;
+    res.json({success, authtoken})
   }
   catch (error) {
+    const success="fail";
     console.error(error.message);
     res.status(500).send("Internal server error occured");
   }

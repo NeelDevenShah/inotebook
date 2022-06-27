@@ -25,6 +25,7 @@ export default function Notes() {
   const onClick=(event)=>{
     editNote(note.id, note.utitle, note.udescription, note.utag);
     refClose.current.click();
+
   }
 
   return (
@@ -34,6 +35,8 @@ export default function Notes() {
       <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         Launch static backdrop modal
       </button>
+
+      {/* Disabled button for the re-update of the notes after the addition */}
 
       <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
@@ -74,6 +77,7 @@ export default function Notes() {
       {/* ------------------------------------------------------------------------------ */}
       <div className="container my-3">
         <h2>See your added notes here</h2>
+        {notes.length===0?"No Notes Exists, Please Enter Notes To See":""}
         {notes.map((notes) => {
           return <Noteitems key={notes._id} updateNote={updateNote} notes={notes} />
         })}

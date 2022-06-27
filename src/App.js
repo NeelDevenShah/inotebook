@@ -7,7 +7,9 @@ import {
 import About from "./components/About";
 import Alerts from "./components/Alerts";
 import Home from "./components/Home";
+import Login from "./components/Login";
 import Navbar from "./components/Navbar";
+import Signup from "./components/Signup";
 import Context from "./Context";
 
 function App() {
@@ -43,16 +45,8 @@ function App() {
 
     //Logic to add in client
 
-    const note1={
-      "_id": "62b47d892dbabcvcadded3157a140e6",
-      "user": "62b1d134a0376af5678addeda30dc",
-      "title": title,
-      "description": description,
-      "tag": tag,
-      "date": "2022-06-23T14:49:45.968Z",
-      "__v": 0
-    };
-    setNotes(notes.concat(note1))
+    const note1=await response.json; 
+    getNotes();
   }
 
   //Delete a note
@@ -101,6 +95,7 @@ function App() {
 
   return (
     <>
+    {/* try{ */}
     <Context.Provider value={{notes, setNotes, addNote, deleteNote, editNote, getNotes}}>
       <Router>
       <Navbar/>
@@ -109,10 +104,16 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home/>}/>
           <Route exact path="/about" element={<About/>}/>
+          <Route exact path="/login" element={<Login/>}/>
+          <Route exact path="/signup" element={<Signup/>}/>
         </Routes>
         </div>
         </Router>
         </Context.Provider>
+      {/* catch(error)
+      {
+        console.error("Internal Server Error")
+      } */}
     </>
   );
 }
