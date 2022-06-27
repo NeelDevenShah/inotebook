@@ -1,11 +1,25 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import Context from '../Context';
 
 const Navbar = () => {
     let location =useLocation();
+    const navigate=useNavigate();
+
+    const context=useContext(Context);
+    const {showAlert}=context;
+
+    const onLogout=()=>{
+        localStorage.removeItem('token');
+        navigate("/login");
+        showAlert("Logout successful","success")
+    }
+
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">iNotebook</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,14 +31,15 @@ const Navbar = () => {
                             <Link className={`nav-link ${location.pathname==="/"?"active":""}`} aria-current="page" to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname==="/about"?"active":""}`} to="/about">About</Link>
+                            <Link className={`nav-link ${location.pathname==="/about"?"active":""}`} to="/about">About Us</Link>
                         </li>
 
                     </ul>
+                    {!localStorage.getItem('token')?
                     <form className="d-flex">
                         <Link to="/login" className="btn btn-outline-success mx-1" >Login</Link>
                         <Link to="/signup" className="btn btn-outline-success">Sign Up</Link>
-                    </form>
+                    </form>:<button onClick={onLogout} className="btn btn-outline-success">Logout</button>}
                 </div>
             </div>
         </nav>

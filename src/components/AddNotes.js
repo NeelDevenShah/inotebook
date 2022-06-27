@@ -3,12 +3,13 @@ import Context from '../Context'
 
 export default function AddNotes() {
     const context = useContext(Context);
-    const { addNote } = context;
+    const { addNote, showAlert} = context;
     const [note, setNote] = useState({ title: "", description: "", tag: "" })
     const handleClick = (event) => {
         event.preventDefault();
         addNote(note.title, note.description, note.tag);
         setNote({title:"", description:"", tag:""})
+        showAlert("Note Add Successful","success");
     }
     const onChange = (event) => {
         //As there are three dots it is said to be the spread operator

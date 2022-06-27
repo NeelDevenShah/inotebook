@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Context from '../Context'
 const Signup = () => {
 
 
   const [credentials, setCredentials] = useState({ name: "aa", email: "", password: "", password1: "" })
+  const context=useContext(Context)
+  const {showAlert}=context
   let navigate = useNavigate();
   const handleSubmit = async (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     if (credentials.password === credentials.password1) {
       const response = await fetch('http://localhost:5000/api/auth/createuser', {
         method: 'POST',
@@ -20,13 +23,15 @@ const Signup = () => {
       if (json.success === true) {
         localStorage.setItem('token', json.authtoken);
         navigate("/")
+        showAlert("Sign Up Successful","success")
       }
       else {
-        alert("Invalid credentials please enter again");
+        showAlert("The entered email already exists, Goto login or enter another email","danger");
+        event.preventDefault();
       }
     }
     else {
-      alert("The both passwords does not match");
+      showAlert("Please re-check both the password, One of them is in-correct","danger");
       event.preventDefault();
     }
   }

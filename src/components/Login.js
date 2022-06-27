@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import Context from '../Context';
 
 const Login = () => {
     
+    const context=useContext(Context);
+    const {showAlert}=context;
+
     const [credentials, setCredentials]=useState({email:"", password:""})
     let navigate=useNavigate();
 
     const handleSubmit=async(event)=>{
-        event.preventDefault();
+        try{
+            event.preventDefault();
         const response = await fetch('http://localhost:5000/api/auth/login', {
             method: 'POST',
             headers: {
@@ -21,10 +26,17 @@ const Login = () => {
             //The following auth code will be stored in the local machine's browser
             localStorage.setItem('token', json.authtoken);
             navigate("/")
+            showAlert("Login Successful","success");
         }
           else{
-            alert("The invalid credentials entered");
+            event.preventDefault();
+            showAlert("The invalid credentials entered", "danger")
           }
+        }
+        catch(error){
+            event.preventDefault();
+            showAlert("The invalid credentials entered", "danger")
+        }
     }
     
     const onChange=(event)=>{

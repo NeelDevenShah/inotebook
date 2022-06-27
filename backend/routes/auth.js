@@ -76,7 +76,6 @@ router.post("/login", [
       success=false;
       return res.status(400).json({success, error: "Wrong crediantials entered, try again" })
     }
-
     const passwordCompare = await bcrypt.compare(password, user.password);
     if (!passwordCompare) {
       success=false;
@@ -89,13 +88,14 @@ router.post("/login", [
     }
     const authtoken = jwt.sign(data, JWT_SECRET);
     // setSuccess("true");
-    let success=true;
+    success=true;
     res.json({success, authtoken})
   }
   catch (error) {
-    const success="fail";
+    // success="fail";
     console.error(error.message);
-    res.status(500).send(success, "Internal server error occured");
+    // ii
+    res.status(500).send("Internal server error occured");
   }
 
 })

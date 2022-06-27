@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useRef, useState} from 'react'
 import Context from '../Context'
 import AddNotes from './AddNotes';
 import Noteitems from './Noteitems';
+import { useNavigate } from "react-router-dom";
 export default function Notes() {
   const context = useContext(Context);
-  const { notes, getNotes, editNote} = context;
+  const { notes, getNotes, editNote, showAlert} = context;
   const [note, setNote] = useState({ title: "", description: "", tag: "" })
   useEffect(() => {
     getNotes()
@@ -12,6 +13,14 @@ export default function Notes() {
 
   const ref = useRef(null)
   const refClose=useRef(null)
+  const navigate=useNavigate();
+
+  const check=()=>{
+    if(localStorage.getItem('token')===null)
+    {
+      navigate("/login");
+    }
+  }
 
   const updateNote = (note) => {
     ref.current.click();
@@ -25,11 +34,11 @@ export default function Notes() {
   const onClick=(event)=>{
     editNote(note.id, note.utitle, note.udescription, note.utag);
     refClose.current.click();
-
+    showAlert("Note Update Successful", "success");
   }
-
   return (
     <>
+        {check()}
       <AddNotes />
       {/* ------------------------------------------------------------------ */}
       <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#staticBackdrop">

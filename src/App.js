@@ -24,7 +24,7 @@ function App() {
      method: 'GET',
      headers: {
        'Content-Type': 'application/json',
-       'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJiMWQxMzRhMDM3NmFmNTY3OGEzMGRjIn0sImlhdCI6MTY1NTkwMjIzOH0.-9wRaEkd_-6J9m1TJEEhzODQLFVm-dJzm5JbjSeiXXc'
+       'auth-token': localStorage.getItem('token')
      },
    });
    const json=await response.json();
@@ -38,7 +38,7 @@ function App() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJiMWQxMzRhMDM3NmFmNTY3OGEzMGRjIn0sImlhdCI6MTY1NTkwMjIzOH0.-9wRaEkd_-6J9m1TJEEhzODQLFVm-dJzm5JbjSeiXXc'
+        'auth-token': localStorage.getItem('token')
       },
       body: JSON.stringify({title, description, tag})
     });
@@ -56,13 +56,14 @@ function App() {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJiMWQxMzRhMDM3NmFmNTY3OGEzMGRjIn0sImlhdCI6MTY1NTkwMjIzOH0.-9wRaEkd_-6J9m1TJEEhzODQLFVm-dJzm5JbjSeiXXc'
+      'auth-token': localStorage.getItem('token')
     },
   });
 
   //For internal instant delete
   const newNotes=notes.filter((note1)=>{return note1._id !== delId})
   setNotes(newNotes);
+  showAlert("Delete Successful","danger")
 }
   //Edit a note
   const editNote=async(id, title, description, tag)=>{
@@ -72,7 +73,7 @@ function App() {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJiMWQxMzRhMDM3NmFmNTY3OGEzMGRjIn0sImlhdCI6MTY1NTkwMjIzOH0.-9wRaEkd_-6J9m1TJEEhzODQLFVm-dJzm5JbjSeiXXc'
+        'auth-token': localStorage.getItem('token')
       },
       body: JSON.stringify({title, description, tag} )
     });
@@ -93,13 +94,29 @@ function App() {
     setNotes(newNotes);
   }
 
+  const [alert, setAlert]=useState({
+    msg: "",
+    type: ""
+  });
+  const showAlert=(message, type)=>{
+    setAlert({
+      msg: message,
+      type: type
+    })
+    setTimeout(() => {
+      setAlert({
+        msg: "",
+        type: ""
+      })
+    }, 3500);
+  }
+
   return (
     <>
-    {/* try{ */}
-    <Context.Provider value={{notes, setNotes, addNote, deleteNote, editNote, getNotes}}>
+    <Context.Provider value={{notes, setNotes, addNote, deleteNote, editNote, getNotes, showAlert, alert}}>
       <Router>
       <Navbar/>
-      <Alerts message="neel is my name"/>
+      <Alerts/>
         <div className="container">
         <Routes>
           <Route exact path="/" element={<Home/>}/>
@@ -110,10 +127,6 @@ function App() {
         </div>
         </Router>
         </Context.Provider>
-      {/* catch(error)
-      {
-        console.error("Internal Server Error")
-      } */}
     </>
   );
 }
