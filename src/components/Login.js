@@ -36,15 +36,15 @@ const Login = () => {
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                    <label htmlFor="exampleInputEmail1" className="form-label">Enter your Email address</label>
                     <input type="email" className="form-control" value={credentials.email} id="email" aria-describedby="emailHelp" name='email' onChange={onChange}/>
                     <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                    <label htmlFor="exampleInputPassword1" className="form-label">Enter your password</label>
                     <input type="password" className="form-control" value={credentials.password} id="password" name="password" onChange={onChange}/>
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-secondary">Submit</button>
             </form>
         </div>
     )
