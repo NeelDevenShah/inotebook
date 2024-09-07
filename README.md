@@ -112,6 +112,3 @@ If you'd like to contribute to the project, please follow these steps:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 Feel free to modify and extend this README to better suit your project’s specific needs!
-
-arduino
-
